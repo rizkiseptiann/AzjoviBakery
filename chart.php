@@ -57,10 +57,14 @@ if (empty($_SESSION['keranjang']) OR !isset($_SESSION['keranjang'])) {
             <?php foreach ($_SESSION ['keranjang'] as $id_produk => $jumlah): ?>
             <!-- menampikan produk berdasarkan id produk -->
             <?php
-            $ambil = $koneksi->query("SELECT *FROM produk WHERE
-                id_produk = '$id_produk'");
+            $ambil = $koneksi->query("SELECT *FROM produk WHERE id_produk = '$id_produk'");
             $pecah = $ambil->fetch_assoc();
-            $subHarga = $pecah['harga_produk'] * $jumlah;
+           if (is_numeric($pecah['harga_produk']) && is_numeric($jumlah)) {
+              $subHarga = $pecah['harga_produk'] * $jumlah;
+          } else {
+              // Handle jika salah satu atau kedua variabel bukan numerik
+              $subHarga = 0; // Atau atur nilai default yang sesuai
+          }
             // echo "<pre>";
             // print_r($pecah);
             // echo "</pre>";
